@@ -14,4 +14,10 @@
     <Folder Include="Controllers\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\CuriousCatClone.Application\CuriousCatClone.Application.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\CuriousCatClone.Infrastructure\CuriousCatClone.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\CuriousCatClone.Presistence\CuriousCatClone.Presistence.csproj" />
+  </ItemGroup>
+
 </Project>
