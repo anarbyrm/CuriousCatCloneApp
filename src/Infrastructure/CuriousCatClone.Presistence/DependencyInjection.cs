@@ -16,10 +16,8 @@ namespace CuriousCatClone.Presistence
 
         private static IServiceCollection AddDbContext(IServiceCollection services, string connectionString)
         {
-            services.AddDbContext<AppDbContext>(options =>
-            {
-                options.UseSqlServer(connectionString);
-            });
+            services.AddDbContext<AppDbContext>(
+                options => options.UseSqlServer(connectionString));
             return services;
         }
 
