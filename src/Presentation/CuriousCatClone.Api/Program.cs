@@ -1,3 +1,4 @@
+using CuriousCatClone.Api.Middlewares;
 using CuriousCatClone.Application;
 using CuriousCatClone.Infrastructure;
 using CuriousCatClone.Presistence;
@@ -28,6 +29,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseMiddleware<ExceptionHandlerMiddleware>();
 
 app.MapControllers();
 

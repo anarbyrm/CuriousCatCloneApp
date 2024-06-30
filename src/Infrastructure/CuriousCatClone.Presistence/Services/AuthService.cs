@@ -1,4 +1,5 @@
-﻿using CuriousCatClone.Application.Features.Commands.User.Login;
+﻿using CuriousCatClone.Application.Exceptions;
+using CuriousCatClone.Application.Features.Commands.User.Login;
 using CuriousCatClone.Application.Features.Commands.User.Register;
 using CuriousCatClone.Application.Services;
 using CuriousCatClone.Domain.Entities;
@@ -23,7 +24,7 @@ namespace CuriousCatClone.Presistence.Services
             AppUser? user = await _userManager.FindByEmailAsync(request.Email);
 
             if (user is null || !await _userManager.CheckPasswordAsync(user, request.Password))
-                throw new Exception("Email or password is not valid");
+                throw new BaseAppException("Email or password is not valid");
 
             string accessToken = _jwtHandler.GenerateAccessToken(user);
 
@@ -38,7 +39,7 @@ namespace CuriousCatClone.Presistence.Services
             string password = request.Password;
 
             if (password != request.PasswordConfirm)
-                throw new Exception("Password and PasswordConfirm have to be the same");
+                throw new BaseAppException("Password and PasswordConfirm have to be the same");
 
             AppUser newUser = new()
             {
@@ -49,9 +50,13 @@ namespace CuriousCatClone.Presistence.Services
             var result = await _userManager.CreateAsync(newUser, password);
 
             if (!result.Succeeded)
-                // exception class
-                //throw new Exception(result.Errors);
-                throw new Exception("User could not be created");
+            {
+                var errors = result.Errors
+                    .Select(err => err.Description)
+                    .ToList();
+
+                throw new UserCreateException("User could not be created", errors);
+            }
 
             return new();
         }
